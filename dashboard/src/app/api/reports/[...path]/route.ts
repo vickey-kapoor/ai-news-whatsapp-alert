@@ -1,34 +1,73 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-// GitHub raw content URL for fetching reports
-const GITHUB_RAW_BASE = 'https://raw.githubusercontent.com/vickey-kapoor/ai-research-whatsapp-digest/master/reports';
+function getDefaultRepo(): string {
+  if (process.env.GITHUB_REPO) {
+    return process.env.GITHUB_REPO;
+  }
+
+  const owner = process.env.VERCEL_GIT_REPO_OWNER;
+  const slug = process.env.VERCEL_GIT_REPO_SLUG;
+
+  if (owner && slug) {
+    return `${owner}/${slug}`;
+  }
+
+  return 'vickey-kapoor/ai-research-whatsapp-digest';
+}
+
+function getBranchesToTry(): string[] {
+  const configured = process.env.GITHUB_BRANCH;
+  const vercelRef = process.env.VERCEL_GIT_COMMIT_REF;
+
+  return [configured, vercelRef, 'main', 'master'].filter(
+    (branch, index, arr): branch is string => Boolean(branch) && arr.indexOf(branch) === index
+  );
+}
+
+async function fetchReportFromGithub(path: string): Promise<Response | null> {
+  const repo = getDefaultRepo();
+  const base = `https://raw.githubusercontent.com/${repo}`;
+
+  for (const branch of getBranchesToTry()) {
+    try {
+      const githubUrl = `${base}/${branch}/reports/${path}`;
+      const response = await fetch(githubUrl, {
+        next: { revalidate: 3600 },
+      });
+
+      if (response.ok) {
+        return response;
+      }
+    } catch (error) {
+      console.warn(`Failed to fetch report from branch ${branch}:`, error);
+    }
+  }
+
+  return null;
+}
+
+type RouteParams = { path: string[] };
 
 export async function GET(
-  request: NextRequest,
-  { params }: { params: { path: string[] } }
+  _request: NextRequest,
+  context: { params: RouteParams } | { params: Promise<RouteParams> }
 ) {
   try {
-    const filePath = params.path.join('/');
+    const params = await context.params;
+    const filePath = params.path.join('/').replace(/^reports\//, '');
 
-    // Validate path to prevent directory traversal
     if (filePath.includes('..')) {
       return new NextResponse('Invalid path', { status: 400 });
     }
 
-    // Fetch from GitHub raw content
-    const githubUrl = `${GITHUB_RAW_BASE}/${filePath}`;
-    const response = await fetch(githubUrl);
+    const response = await fetchReportFromGithub(filePath);
 
-    if (!response.ok) {
+    if (!response) {
       return new NextResponse('File not found', { status: 404 });
     }
 
     const arrayBuffer = await response.arrayBuffer();
-
-    let contentType = 'application/octet-stream';
-    if (filePath.endsWith('.pdf')) {
-      contentType = 'application/pdf';
-    }
+    const contentType = filePath.endsWith('.pdf') ? 'application/pdf' : 'application/octet-stream';
 
     return new NextResponse(arrayBuffer, {
       headers: {
