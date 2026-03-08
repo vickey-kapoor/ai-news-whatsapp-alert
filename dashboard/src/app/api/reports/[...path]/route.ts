@@ -1,25 +1,43 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-// GitHub raw content URL for fetching reports
-const GITHUB_RAW_BASE = 'https://raw.githubusercontent.com/vickey-kapoor/ai-research-whatsapp-digest/master/reports';
+const DEFAULT_REPO = process.env.GITHUB_REPO ?? 'vickey-kapoor/ai-research-whatsapp-digest';
+const DEFAULT_BRANCH = process.env.GITHUB_BRANCH ?? 'main';
+
+async function fetchReportFromGithub(path: string): Promise<Response | null> {
+  const base = `https://raw.githubusercontent.com/${DEFAULT_REPO}`;
+
+  const branchesToTry = [DEFAULT_BRANCH, 'master'].filter(
+    (branch, index, arr) => arr.indexOf(branch) === index
+  );
+
+  for (const branch of branchesToTry) {
+    const githubUrl = `${base}/${branch}/reports/${path}`;
+    const response = await fetch(githubUrl, {
+      next: { revalidate: 3600 },
+    });
+
+    if (response.ok) {
+      return response;
+    }
+  }
+
+  return null;
+}
 
 export async function GET(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: { params: { path: string[] } }
 ) {
   try {
-    const filePath = params.path.join('/');
+    const filePath = params.path.join('/').replace(/^reports\//, '');
 
-    // Validate path to prevent directory traversal
     if (filePath.includes('..')) {
       return new NextResponse('Invalid path', { status: 400 });
     }
 
-    // Fetch from GitHub raw content
-    const githubUrl = `${GITHUB_RAW_BASE}/${filePath}`;
-    const response = await fetch(githubUrl);
+    const response = await fetchReportFromGithub(filePath);
 
-    if (!response.ok) {
+    if (!response) {
       return new NextResponse('File not found', { status: 404 });
     }
 

@@ -21,6 +21,12 @@ export default function ReportsPage({
     return digestDate === selectedDate || d.pdf_path?.includes(selectedDate);
   });
 
+  const pdfApiPath = selectedDigest?.pdf_path
+    ? `/api/reports/${selectedDigest.pdf_path.replace(/^reports\//, '')}`
+    : selectedDate
+      ? `/api/reports/${selectedDate}/ai_research_digest.pdf`
+      : undefined;
+
   return (
     <div className="p-8">
       {/* Header */}
@@ -118,7 +124,7 @@ export default function ReportsPage({
                 </CardTitle>
                 {selectedDate && (
                   <a
-                    href={`/api/reports/${selectedDate}/ai_research_digest.pdf`}
+                    href={pdfApiPath}
                     download
                     className="inline-flex items-center gap-1 px-3 py-1.5 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700"
                   >
@@ -131,7 +137,7 @@ export default function ReportsPage({
               {selectedDate ? (
                 <div className="bg-gray-100 rounded-lg overflow-hidden" style={{ height: '700px' }}>
                   <iframe
-                    src={`/api/reports/${selectedDate}/ai_research_digest.pdf`}
+                    src={pdfApiPath}
                     className="w-full h-full"
                     title={`Report for ${selectedDate}`}
                   />
