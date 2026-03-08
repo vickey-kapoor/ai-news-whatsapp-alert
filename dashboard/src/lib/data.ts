@@ -1,6 +1,3 @@
-import { promises as fs } from 'fs';
-import path from 'path';
-
 // Types
 export interface Paper {
   id: string;
@@ -37,56 +34,36 @@ export interface Config {
   whatsapp_enabled: boolean;
 }
 
-// GitHub raw content URL for fetching data in production
+// GitHub raw content URL for fetching data
 const GITHUB_RAW_BASE = 'https://raw.githubusercontent.com/vickey-kapoor/ai-research-whatsapp-digest/master/data';
 
-// Data file paths (relative to dashboard root, then project root)
-const DATA_PATHS = [
-  path.join(process.cwd(), 'data'),           // dashboard/data (for Vercel)
-  path.join(process.cwd(), '..', 'data'),     // ../data (for local dev)
-];
-
-async function readJsonFile(filename: string): Promise<unknown | null> {
-  // Try local paths first
-  for (const dataPath of DATA_PATHS) {
-    try {
-      const filePath = path.join(dataPath, filename);
-      const data = await fs.readFile(filePath, 'utf-8');
-      return JSON.parse(data);
-    } catch {
-      // Continue to next path
-    }
-  }
-
-  // Fall back to GitHub raw content (for Vercel deployment)
+async function fetchJsonFile(filename: string): Promise<unknown | null> {
   try {
     const response = await fetch(`${GITHUB_RAW_BASE}/${filename}`, {
-      next: { revalidate: 300 } // Revalidate every 5 minutes
+      cache: 'no-store' // Always fetch fresh data
     });
     if (response.ok) {
       return await response.json();
     }
-  } catch {
-    // Failed to fetch from GitHub
+  } catch (error) {
+    console.error(`Failed to fetch ${filename}:`, error);
   }
-
   return null;
 }
 
 export async function getPapers(): Promise<Paper[]> {
-  const data = await readJsonFile('papers.json') as { papers?: Paper[] } | null;
+  const data = await fetchJsonFile('papers.json') as { papers?: Paper[] } | null;
   return data?.papers || [];
 }
 
 export async function getDigests(): Promise<Digest[]> {
-  const data = await readJsonFile('digests.json') as { digests?: Digest[] } | null;
+  const data = await fetchJsonFile('digests.json') as { digests?: Digest[] } | null;
   return data?.digests || [];
 }
 
 export async function getConfig(): Promise<Config> {
-  const data = await readJsonFile('config.json') as Config | null;
+  const data = await fetchJsonFile('config.json') as Config | null;
 
-  // Return fetched config or default
   return data || {
     keywords: [
       'AI agent', 'autonomous agent', 'reasoning', 'chain of thought',
@@ -104,31 +81,11 @@ export async function getConfig(): Promise<Config> {
 }
 
 export async function getReportDates(): Promise<string[]> {
-  // Try local paths first
-  const reportPaths = [
-    path.join(process.cwd(), 'reports'),
-    path.join(process.cwd(), '..', 'reports'),
-  ];
-
-  for (const reportsDir of reportPaths) {
-    try {
-      const entries = await fs.readdir(reportsDir, { withFileTypes: true });
-      return entries
-        .filter(entry => entry.isDirectory())
-        .map(entry => entry.name)
-        .sort()
-        .reverse();
-    } catch {
-      // Continue to next path
-    }
-  }
-
-  // For Vercel, we can derive report dates from digests
+  // Derive report dates from digests
   const digests = await getDigests();
   const dates = digests
     .filter(d => d.pdf_path)
     .map(d => {
-      // Extract date folder from pdf_path like "reports/07-Mar/ai_research_digest.pdf"
       const match = d.pdf_path.match(/reports\/([^/]+)\//);
       return match ? match[1] : null;
     })
@@ -143,7 +100,7 @@ export async function getStats() {
   const digests = await getDigests();
 
   const today = new Date().toISOString().split('T')[0];
-  const todaysPapers = papers.filter(p => p.fetched_at.startsWith(today));
+  const todaysPapers = papers.filter(p => p.fetched_at?.startsWith(today));
   const todaysDigest = digests.find(d => d.date === today);
 
   const sourceCounts = papers.reduce((acc, p) => {
