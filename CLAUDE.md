@@ -5,6 +5,38 @@
 ## Project Overview
 Automated daily AI research digest that fetches academic papers (focusing on AI Agents & Reasoning), ranks by importance using AI, generates **simple ELI5-style summaries** (explain like talking to a kid or grandma), and sends the top research to WhatsApp.
 
+## Dashboard (NEW - March 2026)
+**Live URL:** https://ai-research-whatsapp-digest-vickey-kapoors-projects.vercel.app/
+
+Next.js dashboard deployed on Vercel for viewing research papers, digests, and PDF reports.
+
+### Dashboard Structure
+```
+dashboard/
+├── src/
+│   ├── app/
+│   │   ├── page.tsx          # Home - stats, top paper, recent papers
+│   │   ├── papers/page.tsx   # Papers browser with filters
+│   │   ├── reports/page.tsx  # PDF report viewer
+│   │   ├── analytics/page.tsx # Charts and trends
+│   │   ├── settings/page.tsx # Configuration display
+│   │   └── api/reports/[...path]/route.ts  # Serves PDFs from GitHub
+│   ├── components/ui/        # shadcn/ui components
+│   └── lib/data.ts           # Hardcoded paper/digest data
+├── package.json
+└── next.config.mjs
+```
+
+### Dashboard Data
+Currently using hardcoded data in `dashboard/src/lib/data.ts`. Data is stored as JSON strings and parsed at runtime.
+
+**TODO:** Connect to live data from `data/papers.json` and `data/digests.json` (requires GitHub Actions to update these files).
+
+### Vercel Deployment
+- **Root Directory:** `dashboard`
+- **Framework:** Next.js (auto-detected)
+- **Important:** If builds fail with old code, purge build cache in Vercel settings
+
 ## Architecture
 ```
 main.py                  # Entry point - orchestrates the workflow
@@ -141,3 +173,10 @@ python -c "from src.fetchers.blog_fetcher import fetch_blog_posts; print(fetch_b
 # Test aggregated research fetcher
 python -c "from src.research_fetcher import fetch_ai_research; print(fetch_ai_research(5))"
 ```
+
+## Dashboard Development TODO
+- [ ] Connect dashboard to live data (update `data/papers.json` via GitHub Actions)
+- [ ] Add paper status tracking (read/unread/starred)
+- [ ] Implement search functionality
+- [ ] Add manual workflow trigger button
+- [ ] Make analytics charts dynamic with real data
