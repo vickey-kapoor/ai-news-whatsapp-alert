@@ -10,6 +10,7 @@ from src.research_fetcher import fetch_ai_research
 from src.news_ranker import rank_research
 from src.news_summarizer import summarize_research, summarize_research_detailed
 from src.whatsapp_sender import format_research_message, send_whatsapp_message
+from src.telegram_sender import send_telegram_message
 from src.pdf_generator import generate_research_pdf
 from src.json_exporter import export_papers, export_digest
 
@@ -28,16 +29,17 @@ def main():
     your_whatsapp = os.getenv("YOUR_WHATSAPP_NUMBER")
     openai_key = os.getenv("OPENAI_API_KEY")
 
+    # Telegram config (optional but recommended)
+    telegram_token = os.getenv("TELEGRAM_BOT_TOKEN")
+    telegram_chat_id = os.getenv("TELEGRAM_CHAT_ID")
+
     # Validate required variables
     missing = []
-    if not twilio_sid:
-        missing.append("TWILIO_ACCOUNT_SID")
-    if not twilio_token:
-        missing.append("TWILIO_AUTH_TOKEN")
-    if not twilio_whatsapp:
-        missing.append("TWILIO_WHATSAPP_NUMBER")
-    if not your_whatsapp:
-        missing.append("YOUR_WHATSAPP_NUMBER")
+    has_whatsapp = all([twilio_sid, twilio_token, twilio_whatsapp, your_whatsapp])
+    has_telegram = all([telegram_token, telegram_chat_id])
+
+    if not has_whatsapp and not has_telegram:
+        missing.append("TWILIO or TELEGRAM credentials")
     if not openai_key:
         missing.append("OPENAI_API_KEY")
 
@@ -104,22 +106,34 @@ def main():
     except Exception:
         logger.warning("Could not generate PDF")
 
+    # Send Telegram message
+    telegram_sent = False
+    if has_telegram:
+        logger.info("Sending Telegram message...")
+        try:
+            message = format_research_message(top_research)
+            send_telegram_message(telegram_token, telegram_chat_id, message)
+            telegram_sent = True
+        except Exception as e:
+            logger.error("Error sending Telegram message: %s", e)
+
     # Send WhatsApp message
-    logger.info("Sending WhatsApp message...")
     whatsapp_sent = False
-    try:
-        message = format_research_message(top_research)
-        message_sid = send_whatsapp_message(
-            twilio_sid,
-            twilio_token,
-            twilio_whatsapp,
-            your_whatsapp,
-            message,
-        )
-        logger.info("Message sent successfully! SID: %s", message_sid)
-        whatsapp_sent = True
-    except Exception as e:
-        logger.error("Error sending WhatsApp message: %s", e)
+    if has_whatsapp:
+        logger.info("Sending WhatsApp message...")
+        try:
+            message = format_research_message(top_research)
+            message_sid = send_whatsapp_message(
+                twilio_sid,
+                twilio_token,
+                twilio_whatsapp,
+                your_whatsapp,
+                message,
+            )
+            logger.info("Message sent successfully! SID: %s", message_sid)
+            whatsapp_sent = True
+        except Exception as e:
+            logger.error("Error sending WhatsApp message: %s", e)
 
     # Export digest entry to JSON for dashboard
     logger.info("Exporting digest to JSON...")
@@ -136,7 +150,7 @@ def main():
     except Exception as e:
         logger.warning("Could not export digest to JSON: %s", e)
 
-    if not whatsapp_sent:
+    if not whatsapp_sent and not telegram_sent:
         sys.exit(1)
 
 
