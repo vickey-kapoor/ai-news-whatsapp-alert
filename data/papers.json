@@ -1,6 +1,157 @@
 {
   "papers": [
     {
+      "id": "f879571c-6dff-42aa-b11a-fe26ca0240d5",
+      "title": "Stepping VLMs onto the Court: Benchmarking Spatial Intelligence in Sports",
+      "description": "Sports have long attracted broad attention as they push the limits of human physical and cognitive capabilities. Amid growing interest in spatial intelligence for vision-language models (VLMs), sports provide a natural testbed for understanding high-intensity human motion and dynamic object interactions. To this end, we present CourtSI, the first large-scale spatial intelligence dataset tailored to sports scenarios. CourtSI contains over 1M QA pairs, organized under a holistic taxonomy that s...",
+      "source": "Hugging Face",
+      "url": "https://huggingface.co/papers/2603.09896",
+      "published_at": "2026-03-10T16:50:32+00:00",
+      "fetched_at": "2026-03-11T03:37:37.146650Z",
+      "authors": "Yuchen Yang, Yuqing Shao, Duxiu Huang, Linfeng Dong, Yifei Liu et al. (14 authors)",
+      "topics": [
+        "LLM",
+        "Vision",
+        "Transformer"
+      ],
+      "ranking_score": 0,
+      "status": "unread"
+    },
+    {
+      "id": "201edf9f-8541-48a8-b59e-489d5b860902",
+      "title": "InternVL-U: Democratizing Unified Multimodal Models for Understanding, Reasoning, Generation and Editing",
+      "description": "Unified multimodal models (UMMs) that integrate understanding, reasoning, generation, and editing face inherent trade-offs between maintaining strong semantic comprehension and acquiring powerful generation capabilities. In this report, we present InternVL-U, a lightweight 4B-parameter UMM that democratizes these capabilities within a unified framework. Guided by the principles of unified contextual modeling and modality-specific modular design with decoupled visual representations, InternVL-...",
+      "source": "Hugging Face",
+      "url": "https://huggingface.co/papers/2603.09877",
+      "published_at": "2026-03-10T16:38:33+00:00",
+      "fetched_at": "2026-03-11T03:37:37.146650Z",
+      "authors": "Changyao Tian, Danni Yang, Guanzhou Chen, Erfei Cui, Zhaokai Wang et al. (29 authors)",
+      "topics": [
+        "Reasoning",
+        "Vision"
+      ],
+      "ranking_score": 0,
+      "status": "unread"
+    },
+    {
+      "id": "8fb5a2bc-f8f1-4780-93d3-827ca92f3833",
+      "title": "MiniAppBench: Evaluating the Shift from Text to Interactive HTML Responses in LLM-Powered Assistants",
+      "description": "With the rapid advancement of Large Language Models (LLMs) in code generation, human-AI interaction is evolving from static text responses to dynamic, interactive HTML-based applications, which we term MiniApps. These applications require models to not only render visual interfaces but also construct customized interaction logic that adheres to real-world principles. However, existing benchmarks primarily focus on algorithmic correctness or static layout reconstruction, failing to capture the...",
+      "source": "Hugging Face",
+      "url": "https://huggingface.co/papers/2603.09652",
+      "published_at": "2026-03-10T13:30:03+00:00",
+      "fetched_at": "2026-03-11T03:37:37.146650Z",
+      "authors": "Zuhao Zhang, Chengyue Yu, Yuante Li, Chenyi Zhuang, Linjian Mo et al. (6 authors)",
+      "topics": [
+        "LLM",
+        "Vision"
+      ],
+      "ranking_score": 0,
+      "status": "unread"
+    },
+    {
+      "id": "f71ff1c0-a29a-467b-bda4-4d9c294e57c4",
+      "title": "MM-Zero: Self-Evolving Multi-Model Vision Language Models From Zero Data",
+      "description": "Self-evolving has emerged as a key paradigm for improving foundational models such as Large Language Models (LLMs) and Vision Language Models (VLMs) with minimal human intervention. While recent approaches have demonstrated that LLM agents can self-evolve from scratch with little to no data, VLMs introduce an additional visual modality that typically requires at least some seed data, such as images, to bootstrap the self-evolution process. In this work, we present Multi-model Multimodal Zero ...",
+      "source": "Hugging Face",
+      "url": "https://huggingface.co/papers/2603.09206",
+      "published_at": "2026-03-10T05:23:26+00:00",
+      "fetched_at": "2026-03-11T03:37:37.146650Z",
+      "authors": "Zongxia Li, Hongyang Du, Chengsong Huang, Xiyang Wu, Lantao Yu et al. (11 authors)",
+      "topics": [
+        "LLM",
+        "Vision"
+      ],
+      "ranking_score": 0,
+      "status": "unread"
+    },
+    {
+      "id": "2d8cb633-ddd1-40c7-a8c7-cd3f898b8677",
+      "title": "CREATE: Testing LLMs for Associative Creativity",
+      "description": "A key component of creativity is associative reasoning: the ability to draw novel yet meaningful connections between concepts. We introduce CREATE, a benchmark designed to evaluate models' capacity for creative associative reasoning. CREATE requires models to generate sets of paths connecting concepts in a model's parametric knowledge. Paths should have high specificity (distinctiveness and closeness of the concept connection) and high diversity (dissimilarity from other paths), and models ar...",
+      "source": "arXiv",
+      "url": "https://arxiv.org/abs/2603.09970v1",
+      "published_at": "2026-03-10T00:00:00",
+      "fetched_at": "2026-03-11T03:37:37.146650Z",
+      "authors": "Manya Wadhwa, Tiasa Singha Roy, Harvey Lederman, Junyi Jessy Li, Greg Durrett",
+      "topics": [
+        "Reasoning",
+        "LLM"
+      ],
+      "ranking_score": 0,
+      "status": "unread"
+    },
+    {
+      "id": "e26051ac-2868-49a5-8538-9bf71e7ea37c",
+      "title": "BEACON: Language-Conditioned Navigation Affordance Prediction under Occlusion",
+      "description": "Language-conditioned local navigation requires a robot to infer a nearby traversable target location from its current observation and an open-vocabulary, relational instruction. Existing vision-language spatial grounding methods usually rely on vision-language models (VLMs) to reason in image space, producing 2D predictions tied to visible pixels. As a result, they struggle to infer target locations in occluded regions, typically caused by furniture or moving humans. To address this issue, we...",
+      "source": "arXiv",
+      "url": "https://arxiv.org/abs/2603.09961v1",
+      "published_at": "2026-03-10T00:00:00",
+      "fetched_at": "2026-03-11T03:37:37.146650Z",
+      "authors": "Xinyu Gao, Gang Chen, Javier Alonso-Mora",
+      "topics": [
+        "cs.CL",
+        "LLM",
+        "Vision"
+      ],
+      "ranking_score": 0,
+      "status": "unread"
+    },
+    {
+      "id": "b218534f-b3f9-4145-a2a9-17b1b909ce4b",
+      "title": "Think Before You Lie: How Reasoning Improves Honesty",
+      "description": "While existing evaluations of large language models (LLMs) measure deception rates, the underlying conditions that give rise to deceptive behavior are poorly understood. We investigate this question using a novel dataset of realistic moral trade-offs where honesty incurs variable costs. Contrary to humans, who tend to become less honest given time to deliberate (Capraro, 2017; Capraro et al., 2019), we find that reasoning consistently increases honesty across scales and for several LLM famili...",
+      "source": "arXiv",
+      "url": "https://arxiv.org/abs/2603.09957v1",
+      "published_at": "2026-03-10T00:00:00",
+      "fetched_at": "2026-03-11T03:37:37.146650Z",
+      "authors": "Ann Yuan, Asma Ghandeharioun, Carter Blum, Alicia Machado, Jessica Hoffmann, Daphne Ippolito, Mar...",
+      "topics": [
+        "cs.CL",
+        "Reasoning",
+        "LLM"
+      ],
+      "ranking_score": 0,
+      "status": "unread"
+    },
+    {
+      "id": "2660694d-7335-437c-9d5d-6e1c3589e619",
+      "title": "PathMem: Toward Cognition-Aligned Memory Transformation for Pathology MLLMs",
+      "description": "Computational pathology demands both visual pattern recognition and dynamic integration of structured domain knowledge, including taxonomy, grading criteria, and clinical evidence. In practice, diagnostic reasoning requires linking morphological evidence with formal diagnostic and grading criteria. Although multimodal large language models (MLLMs) demonstrate strong vision language reasoning capabilities, they lack explicit mechanisms for structured knowledge integration and interpretable mem...",
+      "source": "arXiv",
+      "url": "https://arxiv.org/abs/2603.09943v1",
+      "published_at": "2026-03-10T00:00:00",
+      "fetched_at": "2026-03-11T03:37:37.146650Z",
+      "authors": "Jinyue Li, Yuci Liang, Qiankun Li, Xinheng Lyu, Jiayu Qian, Huabao Chen, Kun Wang, Zhigang Zeng, ...",
+      "topics": [
+        "cs.CL",
+        "Reasoning",
+        "LLM",
+        "Vision"
+      ],
+      "ranking_score": 0,
+      "status": "unread"
+    },
+    {
+      "id": "26f81f65-b096-40a6-8b09-fbe654885675",
+      "title": "MedMASLab: A Unified Orchestration Framework for Benchmarking Multimodal Medical Multi-Agent Systems",
+      "description": "While Multi-Agent Systems (MAS) show potential for complex clinical decision support, the field remains hindered by architectural fragmentation and the lack of standardized multimodal integration. Current medical MAS research suffers from non-uniform data ingestion pipelines, inconsistent visual-reasoning evaluation, and a lack of cross-specialty benchmarking. To address these challenges, we present MedMASLab, a unified framework and benchmarking platform for multimodal medical multi-agent sy...",
+      "source": "arXiv",
+      "url": "https://arxiv.org/abs/2603.09909v1",
+      "published_at": "2026-03-10T00:00:00",
+      "fetched_at": "2026-03-11T03:37:37.146650Z",
+      "authors": "Yunhang Qian, Xiaobin Hu, Jiaquan Yu, Siyang Xin, Xiaokun Chen, Jiangning Zhang, Peng-Tao Jiang, ...",
+      "topics": [
+        "cs.MA",
+        "Reasoning",
+        "Multi-Agent",
+        "Vision"
+      ],
+      "ranking_score": 0,
+      "status": "unread"
+    },
+    {
       "id": "d438b1d8-1e78-41bb-bbc1-dad7e9fe9c9e",
       "title": "Reading, Not Thinking: Understanding and Bridging the Modality Gap When Text Becomes Pixels in Multimodal LLMs",
       "description": "Multimodal large language models (MLLMs) can process text presented as images, yet they often perform worse than when the same content is provided as textual tokens. We systematically diagnose this \"modality gap\" by evaluating seven MLLMs across seven benchmarks in five input modes, spanning both synthetically rendered text and realistic document images from arXiv PDFs to Wikipedia pages. We find that the modality gap is task- and data-dependent. For example, math tasks degrade by over 60 poi...",
