@@ -2,11 +2,12 @@
   "digests": [
     {
       "date": "2026-03-11",
-      "top_paper_id": "201edf9f-8541-48a8-b59e-489d5b860902",
+      "top_paper_id": null,
       "papers_fetched": 10,
       "pdf_path": "reports/11-Mar/InternVL-U_Democratizing_Unified_Multimodal_Model.pdf",
       "whatsapp_sent": true,
-      "workflow_run_id": "22935505955"
+      "workflow_run_id": "22935604525",
+      "telegram_sent": true
     },
     {
       "date": "2026-03-10",
